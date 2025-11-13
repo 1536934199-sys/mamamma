@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>中国皮影戏 · 月夜龙影</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Noto Sans SC", "Microsoft Yahei", sans-serif;
+        background: radial-gradient(circle at top, #1f2b47 0%, #0d101c 70%);
+        color: #f8f6f2;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      header {
+        text-align: center;
+        padding: 2.5rem 1rem 1rem;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2.6rem;
+        letter-spacing: 0.1rem;
+      }
+
+      header p {
+        margin-top: 0.75rem;
+        color: #d6c7a1;
+      }
+
+      .stage {
+        position: relative;
+        width: min(90vw, 800px);
+        height: min(70vw, 450px);
+        background: linear-gradient(#141c2f, #090b12);
+        border: 12px solid #332214;
+        border-radius: 18px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        overflow: hidden;
+      }
+
+      .backdrop {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 70% 20%, rgba(255, 241, 204, 0.6) 0%, rgba(26, 33, 54, 0.2) 45%, rgba(6, 8, 16, 0.95) 100%),
+          url("https://images.unsplash.com/photo-1526481280695-3c46937059ab?auto=format&fit=crop&w=1200&q=80") center/cover;
+        mix-blend-mode: screen;
+        filter: grayscale(100%) contrast(120%);
+        opacity: 0.7;
+      }
+
+      .lantern {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle at 50% 30%, rgba(255, 226, 133, 0.9), rgba(255, 142, 21, 0.7));
+        top: 12%;
+        left: 18%;
+        border-radius: 50% 50% 45% 45%;
+        box-shadow: 0 0 40px rgba(255, 179, 71, 0.6);
+        animation: sway 6s ease-in-out infinite;
+        transform-origin: top center;
+      }
+
+      .lantern::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -35px;
+        width: 4px;
+        height: 40px;
+        background: rgba(255, 142, 21, 0.7);
+        transform: translateX(-50%);
+      }
+
+      @keyframes sway {
+        0%,
+        100% {
+          transform: rotate(-4deg);
+        }
+        50% {
+          transform: rotate(4deg);
+        }
+      }
+
+      .character,
+      .dragon {
+        position: absolute;
+        bottom: 0;
+        width: 200px;
+        height: 260px;
+        background: rgba(0, 0, 0, 0.75);
+        clip-path: polygon(35% 0%, 50% 5%, 65% 0%, 70% 12%, 60% 18%, 62% 50%, 80% 70%, 78% 100%, 55% 100%, 45% 80%, 35% 100%, 20% 100%, 25% 65%, 18% 45%, 28% 35%, 30% 10%);
+        filter: drop-shadow(-10px 15px 5px rgba(0, 0, 0, 0.4));
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .character {
+        left: 12%;
+        animation-delay: -2s;
+      }
+
+      .dragon {
+        width: 260px;
+        height: 220px;
+        left: 55%;
+        clip-path: polygon(0% 55%, 15% 45%, 30% 40%, 45% 35%, 55% 20%, 65% 25%, 75% 35%, 85% 30%, 95% 38%, 88% 48%, 95% 58%, 80% 55%, 82% 70%, 65% 65%, 60% 80%, 45% 76%, 30% 90%, 18% 85%, 20% 70%, 5% 65%);
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      .scene-panel {
+        width: min(90vw, 800px);
+        margin: 1.5rem auto 3rem;
+        background: rgba(17, 23, 39, 0.7);
+        border-radius: 14px;
+        padding: 1.5rem;
+        border: 1px solid rgba(230, 210, 160, 0.2);
+        box-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
+      }
+
+      .scene-panel h2 {
+        margin-top: 0;
+        font-size: 1.4rem;
+        letter-spacing: 0.08rem;
+      }
+
+      .scene-description {
+        color: #e3d8c1;
+        line-height: 1.8;
+        margin-bottom: 1rem;
+      }
+
+      .scene-indicators {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .scene-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 213, 133, 0.2);
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+
+      .scene-dot.active {
+        transform: scale(1.4);
+        background: rgba(255, 213, 133, 0.85);
+      }
+
+      button {
+        margin-top: 1.2rem;
+        padding: 0.8rem 1.6rem;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #f8d18f, #d9893e);
+        color: #1d1a16;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(217, 137, 62, 0.35);
+        transition: transform 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-3px);
+      }
+
+      footer {
+        margin: auto auto 1.5rem;
+        font-size: 0.9rem;
+        color: rgba(230, 210, 160, 0.6);
+      }
+
+      @media (max-width: 600px) {
+        header h1 {
+          font-size: 2rem;
+        }
+
+        .stage {
+          border-width: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>中国皮影戏 · 月夜龙影</h1>
+      <p>点击按钮，跟随光影探索古老的传说。</p>
+    </header>
+
+    <div class="stage">
+      <div class="backdrop" aria-hidden="true"></div>
+      <div class="lantern" aria-hidden="true"></div>
+      <div class="character" aria-hidden="true"></div>
+      <div class="dragon" aria-hidden="true"></div>
+    </div>
+
+    <section class="scene-panel" aria-live="polite">
+      <h2 id="scene-title"></h2>
+      <p id="scene-description" class="scene-description"></p>
+      <div class="scene-indicators" role="tablist" aria-label="场景进度"></div>
+      <button type="button" id="next-btn">下一幕</button>
+    </section>
+
+    <footer>灵感源自中国非物质文化遗产——皮影戏。</footer>
+
+    <script>
+      const scenes = JSON.parse(
+        '{{ scenes | tojson | replace("'", "&#39;") | safe }}'
+      );
+      let currentScene = 0;
+
+      const titleEl = document.getElementById("scene-title");
+      const descEl = document.getElementById("scene-description");
+      const dotsContainer = document.querySelector(".scene-indicators");
+      const nextBtn = document.getElementById("next-btn");
+
+      function renderDots() {
+        dotsContainer.innerHTML = "";
+        scenes.forEach((scene, index) => {
+          const dot = document.createElement("span");
+          dot.className = "scene-dot" + (index === currentScene ? " active" : "");
+          dot.setAttribute("role", "tab");
+          dot.setAttribute("aria-label", scene.title);
+          dot.addEventListener("click", () => {
+            currentScene = index;
+            updateScene();
+          });
+          dotsContainer.appendChild(dot);
+        });
+      }
+
+      function updateScene() {
+        const scene = scenes[currentScene];
+        titleEl.textContent = scene.title;
+        descEl.textContent = scene.description;
+        renderDots();
+        nextBtn.textContent = currentScene === scenes.length - 1 ? "回到开场" : "下一幕";
+      }
+
+      nextBtn.addEventListener("click", () => {
+        currentScene = (currentScene + 1) % scenes.length;
+        updateScene();
+      });
+
+      updateScene();
+    </script>
+  </body>
+</html>
